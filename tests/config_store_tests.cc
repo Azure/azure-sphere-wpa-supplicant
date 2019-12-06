@@ -50,7 +50,10 @@ TEST_F(ConfigStoreTests, WriterCanCreateFile)
     ConfigStore sto;
     ConfigStore_Init(&sto);
 
-    ASSERT_EQ(ConfigStore_Open(&sto, file_name.c_str(), AnyMaxSize, O_RDWR | O_CREAT | O_CLOEXEC), 0) << errno;
+    ASSERT_EQ(ConfigStore_Open(&sto, file_name.c_str(), AnyMaxSize, O_RDWR | O_CREAT | O_CLOEXEC,
+                               ConfigStoreReplica_None),
+              0)
+        << errno;
 
     // Empty because it hasn't been committed yet.
     ASSERT_EQ(::stat(file_name.c_str(), &st), 0);
@@ -71,7 +74,10 @@ TEST_F(ConfigStoreTests, WriterCanAddEntryToFile)
     ConfigStore sto;
     ConfigStore_Init(&sto);
 
-    ASSERT_EQ(ConfigStore_Open(&sto, file_name.c_str(), AnyMaxSize, O_RDWR | O_CREAT | O_CLOEXEC), 0) << errno;
+    ASSERT_EQ(ConfigStore_Open(&sto, file_name.c_str(), AnyMaxSize, O_RDWR | O_CREAT | O_CLOEXEC,
+                               ConfigStoreReplica_None),
+              0)
+        << errno;
 
     ASSERT_EQ(ConfigStore_BeginKvp(&sto), ConfigStore_EndKvp(&sto));
 
@@ -92,7 +98,8 @@ TEST_F(ConfigStoreTests, WriterCanAddEntryToFile)
 
     struct stat st;
     ASSERT_EQ(::stat(file_name.c_str(), &st), 0);
-    ASSERT_EQ(st.st_size, sizeof(ConfigStoreFileHeader) + sizeof(ConfigStoreKvpHeader) + sizeof(AnyData));
+    ASSERT_EQ(st.st_size,
+              sizeof(ConfigStoreFileHeader) + sizeof(ConfigStoreKvpHeader) + sizeof(AnyData));
 
     ConfigStore_Close(&sto);
 }
