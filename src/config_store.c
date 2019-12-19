@@ -48,7 +48,8 @@ size_t ConfigStore_GetKvpFullSize(const ConfigStoreKvpHeader *p, const ConfigSto
 
 bool ConfigStore_CanDereferenceKvp(const ConfigStoreKvpHeader *p, const ConfigStoreKvpHeader *pEnd)
 {
-    return p && (sizeof(*p) <= p->size) && (p->size <= GetDistance(p, pEnd));
+    bool ret = p && pEnd && GetDistance(p, pEnd) >= sizeof(*p) && (sizeof(*p) <= p->size) && (p->size <= GetDistance(p, pEnd));
+    return ret;
 }
 
 ConfigStoreKvpHeader *ConfigStore_GetNextKvp(const ConfigStoreKvpHeader *p,
@@ -62,7 +63,13 @@ ConfigStoreKvpHeader *ConfigStore_GetNextKvp(const ConfigStoreKvpHeader *p,
     } else {
         dist = GetDistance(p, pEnd);
     }
-    return (ConfigStoreKvpHeader *)((ptrdiff_t)p + dist);
+
+    ConfigStoreKvpHeader *retval = (ConfigStoreKvpHeader *)((ptrdiff_t)p + dist);
+    if (!ConfigStore_CanDereferenceKvp(retval, pEnd)) {
+        retval = (ConfigStoreKvpHeader *) pEnd;
+    }
+
+    return retval;
 }
 
 uint32_t ConfigStore_AddCrc(uint32_t init, const uint8_t *data, size_t size)
