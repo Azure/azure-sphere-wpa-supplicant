@@ -377,15 +377,19 @@ int ConfigStore_Commit(ConfigStore *p)
     if (p->_replica_type == ConfigStoreReplica_Swap) {
         // Create the swap file always.
         int fd = open(p->_replica_path, O_RDWR | O_CREAT | O_CLOEXEC | O_TRUNC, S_IRUSR | S_IWUSR);
+        fprintf(stderr, "Opening: %s\n", p->_replica_path);
         if (fd < 0) {
             return -1;
         }
         int res = Impl_WriteToFile(fd, p);
+        sync();
         close(fd);
         if (res < 0) {
             return -1;
         }
+        fprintf(stderr, "Renaming %s --> %s\n", p->_replica_path, p->_primary_path);
         res = rename(p->_replica_path, p->_primary_path);
+        sync();
         if (res < 0) {
             return -1;
         }
