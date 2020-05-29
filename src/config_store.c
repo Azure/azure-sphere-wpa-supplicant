@@ -90,6 +90,7 @@ void ConfigStore_Init(ConfigStore *p)
 {
     memset(p, 0, sizeof(*p));
     p->_fd = -1;
+    printf("inside the ConfigStore_Init function");
 }
 
 void ConfigStore_Close(ConfigStore *p)
@@ -156,6 +157,7 @@ static bool ReplicaTypeIsValid(ConfigStoreReplicaType rtype)
 static int Impl_Open(ConfigStore *p, const char *base_filepath, size_t max_size, int flags,
                      ConfigStoreReplicaType rtype)
 {
+    printf("inside the Imple_Open function");
     if (!ReplicaTypeIsValid(rtype)) {
         errno = EINVAL;
         return -1;
