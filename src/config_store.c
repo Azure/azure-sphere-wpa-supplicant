@@ -314,7 +314,8 @@ static int Impl_Open(ConfigStore *p, const char *base_filepath, size_t max_size,
     if (p->_primary_path == NULL) {
         return -1;
     }
-    printf("\nthe file name is h: %s\n",base_filepath);
+    printf("\nthe file name is h: %s\t\n",base_filepath);
+    printf("check the line above");
 
     if (p->_replica_type == ConfigStoreReplica_Swap) {
         p->_replica_path = AppendString(base_filepath, ".tmp");
