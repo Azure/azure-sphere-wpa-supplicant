@@ -80,6 +80,12 @@ typedef struct ConfigStore {
 } ConfigStore;
 
 /// <summary>
+/// Delete the left over temp files during the device power up
+/// </summary>
+void DeleteAllTempFiles();//(char *v[]);
+
+
+/// <summary>
 /// Initializes the memory of a ConfigStore for usage. Equivalent to the constructor.
 /// </summary>
 void ConfigStore_Init(ConfigStore *p);

@@ -10,7 +10,10 @@
 #include <sys/stat.h>
 #include <sys/statvfs.h>
 #include <sys/types.h>
+#include <sys/dir.h>
 #include <unistd.h>
+#include <dirent.h>
+#include <string.h>
 
 static char *AppendString(const char *front, const char *back)
 {
@@ -90,8 +93,149 @@ void ConfigStore_Init(ConfigStore *p)
 {
     memset(p, 0, sizeof(*p));
     p->_fd = -1;
-    printf("inside the ConfigStore_Init function");
+    printf("inside the ConfigStore_Init function\n");
+    
+    DeleteAllTempFiles();
+    printf("delete function is called\n");
+    printf("\n");
+    printf("\n");
 }
+
+/*To delete the leftover tmp files on the device startup*/
+void DeleteFileHelper(struct dirent *file, char* filePath)
+{
+    char *ptr, *fileName;
+    int status=1;
+    fileName=file->d_name;
+    
+    //rindex() is a string handling function that returns a pointer to the last occurrence 
+    //of character c in string s, or a NULL pointer if c does not occur in the string.
+    ptr = rindex(fileName, '.');
+
+    //Check for filename extensions
+    if ((ptr != NULL) && ((strcmp(ptr, ".c") == 0)))
+    { 
+        char * str3 = (char *) malloc(1 + strlen(filePath)+ strlen(fileName) );
+        strcpy(str3, filePath);
+        strcat(str3, fileName);
+        //delete the file
+        status=unlink(str3);
+        if(status !=0)
+        {
+            printf("\n temp file found but not able to delete it, file name is %s and the value of status is: %d",fileName,status);
+            printf("\nthe errno value is: %d\n", errno);
+            return;
+        }
+        else
+            printf("\ntemp file deleted");
+        free(str3);  
+    }
+    else
+    {
+        printf("\n this is not a temp file, file name is %s: ",fileName);
+        return;
+    }
+    //printf("\n able to delete the temp file");
+    //return true;
+    
+}
+void DeleteAllTempFiles()//(char *v[])
+{
+    DIR *myDirectory;
+    struct dirent *tempFile;
+
+    if (true) 
+    {
+        //open the directory
+        char input1[]="/home/hardikgarg/Microsoft/Bugs/114932/DeleteTempFiles/testFolder/";
+        myDirectory=opendir(input1);
+        //myDirectory = opendir(v[1]);
+        if (myDirectory) 
+        {
+            printf("the directory is opened, let's check its files:");
+            //bool delete_res=false;
+            while ((tempFile = readdir(myDirectory)))
+            {
+                DeleteFileHelper(tempFile,input1);
+            }   
+            // Close the directory
+            if (closedir(myDirectory) == 0)
+                printf("The directory is now closed.");
+            else
+                printf("The directory can not be closed.");
+        } 
+       
+    } 
+
+}
+
+
+
+/*void deleteAllTempFiles(char *v[])
+{
+    DIR *myDirectory;
+    struct dirent *tempFile;
+
+    if (true) 
+    {
+        //open the directory
+        char input1[]="/home/hardikgarg/Microsoft/Bugs/114932/DeleteTempFiles/testFolder/";
+        
+        //char* input2=input1;
+        myDirectory=opendir(input1);
+        //myDirectory = opendir(v[1]);
+        if (myDirectory) 
+        {
+            printf("the directory is opened, let's check its files:");
+            //bool delete_res=false;
+            while ((tempFile = readdir(myDirectory)))
+            {
+                char * str3 = (char *) malloc(1 + strlen(input1)+ strlen(tempFile->d_name) );
+                strcpy(str3, input1);
+                strcat(str3, tempFile->d_name);
+                printf("\nthe path is: %s\n",str3);
+                //findTempFiles(tempFile);
+                char *ptr, *fileName;
+                int status=1;
+                //rindex() is a string handling function that returns a pointer to the last occurrence 
+                //of character c in string s, or a NULL pointer if c does not occur in the string.
+            
+                fileName=tempFile->d_name;
+               
+                
+                //Check for filename extensions
+                ptr = rindex(tempFile->d_name, '.');
+                if ((ptr != NULL) && ((strcmp(ptr, ".c") == 0)))
+                { 
+                    //delete the file
+                    printf("the file name is is is %s: ",tempFile->d_name);
+                    status=unlink(str3);
+                    if(status !=0)
+                    {
+                        printf("\n temp file found but not able to delete it, file name is %s and the value of status is: %d",fileName,status);
+                        printf("\nthe errno value is: %d\n", errno);
+                        //return;
+                    }
+                    else
+                        printf("\ntemp file deleted");  
+                }
+                else
+                {
+                    printf("\n this is not a temp file, file name is %s: ",fileName);
+                    //return;
+                }
+               
+            }    
+            // Close the directory
+            if (closedir(myDirectory) == 0)
+                printf("The directory is now closed.");
+            else
+                printf("The directory can not be closed.");
+        } 
+        
+    } 
+
+}*/
 
 void ConfigStore_Close(ConfigStore *p)
 {
@@ -170,6 +314,7 @@ static int Impl_Open(ConfigStore *p, const char *base_filepath, size_t max_size,
     if (p->_primary_path == NULL) {
         return -1;
     }
+    printf("\nthe file name is h: %s\n",base_filepath);
 
     if (p->_replica_type == ConfigStoreReplica_Swap) {
         p->_replica_path = AppendString(base_filepath, ".tmp");
