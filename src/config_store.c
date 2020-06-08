@@ -95,8 +95,8 @@ void ConfigStore_Init(ConfigStore *p)
     p->_fd = -1;
     printf("inside the ConfigStore_Init function\n");
     
-    DeleteAllTempFiles();
-    printf("delete function is called\n");
+    //DeleteAllTempFiles();
+    printf("delete function is not called\n");
     printf("\n");
     printf("\n");
 }
