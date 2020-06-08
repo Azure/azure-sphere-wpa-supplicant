@@ -104,6 +104,7 @@ void ConfigStore_Init(ConfigStore *p)
 /*To delete the leftover tmp files on the device startup*/
 void DeleteFileHelper(struct dirent *file, char* filePath)
 {
+    printf("\nhelper function\n");
     char *ptr, *fileName;
     int status=1;
     fileName=file->d_name;
@@ -169,9 +170,9 @@ void DeleteAllTempFiles()//(char *v[])
             else
                 printf("The directory can not be closed.");
         }
-	/*else{
+	else{
 	     printf("\nnot able to open the directory\n");
-	}*/ 
+	} 
        
     } 
 
