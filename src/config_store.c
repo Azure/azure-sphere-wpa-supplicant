@@ -113,7 +113,8 @@ void DeleteFileHelper(struct dirent *file, char* filePath)
     ptr = rindex(fileName, '.');
 
     //Check for filename extensions
-    if ((ptr != NULL) && ((strcmp(ptr, ".c") == 0)))
+    //if ((ptr != NULL) && ((strcmp(ptr, ".c") == 0)))
+    if ((ptr != NULL) && ((strcmp(ptr, ".cfg") == 0)||(strcmp(ptr, ".conf") == 0)))
     { 
         char * str3 = (char *) malloc(1 + strlen(filePath)+ strlen(fileName) );
         strcpy(str3, filePath);
@@ -126,8 +127,10 @@ void DeleteFileHelper(struct dirent *file, char* filePath)
             printf("\nthe errno value is: %d\n", errno);
             return;
         }
-        else
-            printf("\ntemp file deleted");
+        else{
+            printf("\ntemp file deleted\n");
+	    printf("\nname of the deleted temp file: %s\n",fileName);
+	}
         free(str3);  
     }
     else
@@ -148,8 +151,9 @@ void DeleteAllTempFiles()//(char *v[])
     if (true) 
     {
         //open the directory
-        char input1[]="/home/hardikgarg/Microsoft/Bugs/114932/DeleteTempFiles/testFolder/";
-        myDirectory=opendir(input1);
+        //char input1[]="/home/hardikgarg/Microsoft/Bugs/114932/DeleteTempFiles/testFolder/";
+        char input1[]="/mnt/config/7ba05ff7-7835-4b26-9eda-29af0c635280/";        
+	myDirectory=opendir(input1);
         //myDirectory = opendir(v[1]);
         if (myDirectory) 
         {
