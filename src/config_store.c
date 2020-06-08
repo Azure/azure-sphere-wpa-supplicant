@@ -141,6 +141,7 @@ void DeleteFileHelper(struct dirent *file, char* filePath)
 }
 void DeleteAllTempFiles()//(char *v[])
 {
+    printf("\ncalled from the normal world repo\n");
     DIR *myDirectory;
     struct dirent *tempFile;
 
