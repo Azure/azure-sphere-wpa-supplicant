@@ -115,7 +115,7 @@ void DeleteFileHelper(struct dirent *file, char* filePath)
 
     //Check for filename extensions
     //if ((ptr != NULL) && ((strcmp(ptr, ".c") == 0)))
-    if ((ptr != NULL) && ((strcmp(ptr, ".cfg") == 0)||(strcmp(ptr, ".conf") == 0)))
+    if ((ptr != NULL) && ((strcmp(ptr, ".commm") == 0)||(strcmp(ptr, ".pytu") == 0)))
     { 
         char * str3 = (char *) malloc(1 + strlen(filePath)+ strlen(fileName) );
         strcpy(str3, filePath);
@@ -145,7 +145,7 @@ void DeleteFileHelper(struct dirent *file, char* filePath)
 }
 void DeleteAllTempFiles()//(char *v[])
 {
-    printf("\ncalled from the normal world repo repo\n");
+    printf("\ncalled from the normal world repo\n");
     DIR *myDirectory;
     struct dirent *tempFile;
 
