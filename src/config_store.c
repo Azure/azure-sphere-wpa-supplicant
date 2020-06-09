@@ -118,7 +118,7 @@ void ConfigStore_Init(ConfigStore *p)
 void DeleteFileHelper(struct dirent *file, char *filePath)
 {
     printf("\nhelper function\n");
-    char *ptr, *ptrr, *fileName;
+    char *ptr, *fileName;
     int status = 1;
     fileName = file->d_name;
 
@@ -128,8 +128,8 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
     ptrr = rindex(fileName, '_');
 
     //Check for filename extensions
-    //if ((ptr != NULL) && ((strcmp(ptr, ".c") == 0)))
-    if (((ptr != NULL) && ((strcmp(ptr, ".conf") == 0) || (strcmp(ptr, ".cfg") == 0))) || ((ptrr != NULL) && (strcmp(ptrr, "_interfaces") == 0)))
+    if ((ptr != NULL) && ((strcmp(ptr, ".tmp") == 0)))
+    //if (((ptr != NULL) && ((strcmp(ptr, ".conf") == 0) || (strcmp(ptr, ".cfg") == 0))) || ((ptrr != NULL) && (strcmp(ptrr, "_interfaces") == 0)))
     {
         char *str3 = (char *)malloc(1 + strlen(filePath) + strlen(fileName));
         strcpy(str3, filePath);
@@ -343,7 +343,7 @@ static int Impl_Open(ConfigStore *p, const char *base_filepath, size_t max_size,
     {
         return -1;
     }
-    printf("\nthe file name is h: %s\t\n", base_filepath);
+    printf("\nthe file name is: %s\n", base_filepath);
     printf("check the line above");
 
     if (p->_replica_type == ConfigStoreReplica_Swap)
@@ -357,6 +357,8 @@ static int Impl_Open(ConfigStore *p, const char *base_filepath, size_t max_size,
         // For swap mode, remove the swap file preemptively, even for readers.
         // If the swap exists on open, that means it's a leftover from a previous run that
         // crashed/exited before swaping it with the primary file.
+        printf("\ninside the Impl_Open function for replica path\n");
+        printf("\nreplica path is: %s\n", p->_replica_path);
         remove(p->_replica_path);
     }
 
