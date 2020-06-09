@@ -134,10 +134,10 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
         //char *str3 = (char *)malloc(1 + strlen(filePath) + strlen(fileName));
         //strcpy(str3, filePath);
         //strcat(str3, fileName);
-        char *str3 = AppendString(filePath, fileName);
-        printf("\ndeleting the temp file %s\n", str3);
+        char *fileToDelete = AppendString(filePath, fileName);
+        printf("\ndeleting the temp file %s\n", fileToDelete);
         //delete the file
-        status = unlink(str3);
+        status = unlink(fileToDelete);
         if (status != 0)
         {
             printf("\n temp file found but not able to delete it, file name is %s and the value of status is: %d", fileName, status);
@@ -149,7 +149,8 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
             printf("\ntemp file deleted\n");
             printf("\nname of the deleted temp file: %s\n", fileName);
         }
-        free(str3);
+        //free the memory
+        free(fileToDelete);
     }
     else
     {
