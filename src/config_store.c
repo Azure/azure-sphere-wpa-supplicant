@@ -145,7 +145,7 @@ void DeleteFileHelper(struct dirent *file, char* filePath)
 }
 void DeleteAllTempFiles()//(char *v[])
 {
-    printf("\ncalled from the normal world repo\n");
+    printf("\ncalled from the normal world repo::\n");
     DIR *myDirectory;
     struct dirent *tempFile;
 
@@ -153,7 +153,7 @@ void DeleteAllTempFiles()//(char *v[])
     {
         //open the directory
         //char input1[]="/home/hardikgarg/Microsoft/Bugs/114932/DeleteTempFiles/testFolder/";
-        char input1[]="h: /mnt/config/7ba05ff7-7835-4b26-9eda-29af0c635280/";        
+        char input1[]="h:/mnt/config/7ba05ff7-7835-4b26-9eda-29af0c635280/";        
 	myDirectory=opendir(input1);
         //myDirectory = opendir(v[1]);
         if (myDirectory) 
