@@ -127,12 +127,14 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
     ptr = rindex(fileName, '.');
 
     //Check for filename extensions
-    if ((ptr != NULL) && ((strcmp(ptr, ".tmp") == 0)))
-    //if (((ptr != NULL) && ((strcmp(ptr, ".conf") == 0) || (strcmp(ptr, ".cfg") == 0))) || ((ptrr != NULL) && (strcmp(ptrr, "_interfaces") == 0)))
+    //if ((ptr != NULL) && ((strcmp(ptr, ".tmp") == 0)))
+    if (((ptr != NULL) && ((strcmp(ptr, ".conf") == 0) || (strcmp(ptr, ".cfg") == 0))) || ((ptrr != NULL) && (strcmp(ptrr, "_interfaces") == 0)))
     {
-        char *str3 = (char *)malloc(1 + strlen(filePath) + strlen(fileName));
-        strcpy(str3, filePath);
-        strcat(str3, fileName);
+        //char *str3 = (char *)malloc(1 + strlen(filePath) + strlen(fileName));
+        //strcpy(str3, filePath);
+        //strcat(str3, fileName);
+        char *str3 = AppendString(filePath, fileName);
+        printf("\ndeleting the temp file %s\n", str3);
         //delete the file
         status = unlink(str3);
         if (status != 0)
