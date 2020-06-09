@@ -105,17 +105,18 @@ void ConfigStore_Init(ConfigStore *p)
 void DeleteFileHelper(struct dirent *file, char* filePath)
 {
     printf("\nhelper function\n");
-    char *ptr, *fileName;
+    char *ptr, *ptrr, *fileName;
     int status=1;
     fileName=file->d_name;
     
     //rindex() is a string handling function that returns a pointer to the last occurrence 
     //of character c in string s, or a NULL pointer if c does not occur in the string.
     ptr = rindex(fileName, '.');
+    ptrr=rindex(fileName,'_');
 
     //Check for filename extensions
     //if ((ptr != NULL) && ((strcmp(ptr, ".c") == 0)))
-    if ((ptr != NULL) && ((strcmp(ptr, ".conf") == 0)||(strcmp(ptr, ".cfg") == 0)))
+    if (((ptr != NULL) && ((strcmp(ptr, ".conf") == 0)||(strcmp(ptr, ".cfg") == 0))) ||((ptrr!=NULL)&&(strcmp(ptrr,"_interfaces"))))
     { 
         char * str3 = (char *) malloc(1 + strlen(filePath)+ strlen(fileName) );
         strcpy(str3, filePath);
