@@ -125,7 +125,6 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
     //rindex() is a string handling function that returns a pointer to the last occurrence
     //of character c in string s, or a NULL pointer if c does not occur in the string.
     ptr = rindex(fileName, '.');
-    ptrr = rindex(fileName, '_');
 
     //Check for filename extensions
     if ((ptr != NULL) && ((strcmp(ptr, ".tmp") == 0)))
