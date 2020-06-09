@@ -153,7 +153,7 @@ void DeleteAllTempFiles()//(char *v[])
     {
 	printf("\ninside the true true function\n");
         //open the directory
-        char input1[]="/home/hardikgarg/Microsoft/Bugs/114932/DeleteTempFiles/testFolder/";
+        //char input1[]="/home/hardikgarg/Microsoft/Bugs/114932/DeleteTempFiles/testFolder/";
         char input1[]="h:/mnt/config/7ba05ff7-7835-4b26-9eda-29af0c635280/";        
 	myDirectory=opendir(input1);
         //myDirectory = opendir(v[1]);
