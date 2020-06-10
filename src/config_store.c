@@ -163,6 +163,7 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
 // to delete all the garbage temp files
 void DeleteAllTempFiles(const char *dirPath)
 {
+    printf("\nthe directory pathh is %s\n", dirPath);
     DIR *myDirectory;
     struct dirent *fileName;
 
