@@ -112,7 +112,6 @@ void ConfigStore_Init(ConfigStore *p)
 void DeleteFileHelper(struct dirent *file, char *filePath)
 {
     char *ptr, *fileName;
-    int status = 1;
     fileName = file->d_name;
 
     //rindex() is a string handling function that returns a pointer to the last occurrence
@@ -126,7 +125,7 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
         char *fileToDelete = AppendString(filePath, fileName);
 
         //delete the file
-        status = unlink(fileToDelete);
+        unlink(fileToDelete);
         //printf("\nName of the deleted garbage temp file: %s\n", fileToDelete);
         //free the memory
         free(fileToDelete);
