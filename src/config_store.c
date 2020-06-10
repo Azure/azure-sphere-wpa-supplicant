@@ -160,19 +160,19 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
     //printf("\n able to delete the temp file");
     //return true;
 }
-void DeleteAllTempFiles() //(char *v[])
+void DeleteAllTempFiles(const char *dirPath) //(char *v[])
 {
     printf("\ncalled from the normal world repo repo\n");
     DIR *myDirectory;
     struct dirent *tempFile;
-
+    printf("\nthe directory path is: %s\n", dirPath);
     if (true)
     {
         printf("\ninside the true function\n");
         //open the directory
         //char input1[]="/home/hardikgarg/Microsoft/Bugs/114932/DeleteTempFiles/testFolder/";
         char input1[] = "/mnt/config/7ba05ff7-7835-4b26-9eda-29af0c635280/";
-        myDirectory = opendir(input1);
+        myDirectory = opendir(dirPath);
         //myDirectory = opendir(v[1]);
         if (myDirectory)
         {
