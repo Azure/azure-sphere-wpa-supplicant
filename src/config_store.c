@@ -106,64 +106,35 @@ void ConfigStore_Init(ConfigStore *p)
 {
     memset(p, 0, sizeof(*p));
     p->_fd = -1;
-    printf("inside the ConfigStore_Init function\n");
-
-    //DeleteAllTempFiles();
-    printf("delete function is not called\n");
-    printf("\n");
-    printf("\n");
 }
 
 /*To delete the leftover tmp files on the device startup*/
 void DeleteFileHelper(struct dirent *file, char *filePath)
 {
-    printf("\nhelper function\n");
-    char *ptr, *ptrr, *fileName;
+    char *ptr, *fileName;
     int status = 1;
     fileName = file->d_name;
 
     //rindex() is a string handling function that returns a pointer to the last occurrence
     //of character c in string s, or a NULL pointer if c does not occur in the string.
     ptr = rindex(fileName, '.');
-    ptrr = rindex(fileName, '_');
 
     //Check for filename extensions
-    //if ((ptr != NULL) && ((strcmp(ptr, ".tmp") == 0)))
-    if (((ptr != NULL) && ((strcmp(ptr, ".conf") == 0) || (strcmp(ptr, ".cfg") == 0))) || ((ptrr != NULL) && (strcmp(ptrr, "_interfaces") == 0)))
+    if ((ptr != NULL) && ((strcmp(ptr, ".tmp") == 0)))
     {
-        //char *str3 = (char *)malloc(1 + strlen(filePath) + strlen(fileName));
-        //strcpy(str3, filePath);
-        //strcat(str3, fileName);
+        //printf("\nGarbage temp file found, deleting it now\n");
         char *fileToDelete = AppendString(filePath, fileName);
-        printf("\ndeleting the temp file %s\n", fileToDelete);
+
         //delete the file
         status = unlink(fileToDelete);
-        if (status != 0)
-        {
-            printf("\n temp file found but not able to delete it, file name is %s and the value of status is: %d", fileName, status);
-            printf("\nthe errno value is: %d\n", errno);
-            return;
-        }
-        else
-        {
-            printf("\ntemp file deleted\n");
-            printf("\nname of the deleted temp file: %s\n", fileName);
-        }
+        //printf("\nName of the deleted garbage temp file: %s\n", fileToDelete);
         //free the memory
         free(fileToDelete);
     }
-    else
-    {
-        printf("\n this is not a temp file, file name is %s: ", fileName);
-        return;
-    }
-    //printf("\n able to delete the temp file");
-    //return true;
 }
 // to delete all the garbage temp files
 void DeleteAllTempFiles(const char *dirPath)
 {
-    printf("\nthe directory pathh is %s\n", dirPath);
     DIR *myDirectory;
     struct dirent *fileName;
 
@@ -253,7 +224,6 @@ static bool ReplicaTypeIsValid(ConfigStoreReplicaType rtype)
 static int Impl_Open(ConfigStore *p, const char *base_filepath, size_t max_size, int flags,
                      ConfigStoreReplicaType rtype)
 {
-    printf("inside the Imple_Open function");
     if (!ReplicaTypeIsValid(rtype))
     {
         errno = EINVAL;
@@ -268,8 +238,6 @@ static int Impl_Open(ConfigStore *p, const char *base_filepath, size_t max_size,
     {
         return -1;
     }
-    printf("\nthe file name is: %s\n", base_filepath);
-    printf("check the line above");
 
     if (p->_replica_type == ConfigStoreReplica_Swap)
     {
@@ -282,8 +250,6 @@ static int Impl_Open(ConfigStore *p, const char *base_filepath, size_t max_size,
         // For swap mode, remove the swap file preemptively, even for readers.
         // If the swap exists on open, that means it's a leftover from a previous run that
         // crashed/exited before swaping it with the primary file.
-        printf("\ninside the Impl_Open function for replica path\n");
-        printf("\nreplica path is: %s\n", p->_replica_path);
         remove(p->_replica_path);
     }
 
