@@ -121,12 +121,10 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
     //Check for filename extensions
     if ((ptr != NULL) && ((strcmp(ptr, ".tmp") == 0)))
     {
-        //printf("\nGarbage temp file found, deleting it now\n");
         char *fileToDelete = AppendString(filePath, fileName);
 
         //delete the file
         unlink(fileToDelete);
-        //printf("\nName of the deleted garbage temp file: %s\n", fileToDelete);
         //free the memory
         free(fileToDelete);
     }
