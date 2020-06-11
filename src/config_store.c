@@ -118,13 +118,15 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
     //of character c in string s, or a NULL pointer if c does not occur in the string.
     ptr = rindex(fileName, '.');
 
+    printf("\nthe ptr is: %s\n", ptr);
     //Check for filename extensions
-    if ((ptr != NULL) && ((strcmp(ptr, ".tmp") == 0)))
+    if ((ptr != NULL) && (strncmp(ptr, ".conf", 5) == 0))
     {
         char *fileToDelete = AppendString(filePath, fileName);
 
         //delete the file
         unlink(fileToDelete);
+        printf("\nthe file is deleted: %s\n", fileName);
         //free the memory
         free(fileToDelete);
     }
