@@ -21,6 +21,28 @@ public:
         chdir(TempTestDir);
     }
 
+    //to test the ConfigStore_DeleteAllTempFiles function
+    static bool SetUpFilesInDir()
+    {
+        //check if the TempTestDir exists
+        if (stat(TempTestDir, &st) == -1) 
+        {
+            int r = mkdir(TempTestDir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+            ASSERT_TRUE(r == 0 || errno == EEXIST) << errno;
+        }
+        //change the directory
+        chdir(TempTestDir);
+
+        //create a temp file
+        FILE* TestFile.tmp = tmpfile();
+        
+        //check if the file is created
+        ASSERT_TRUE(TestFile.tmp == 0 || errno == EEXIST) << errno;
+        if(TestFile.tmp==0)
+            return false;
+        return true;
+    }
+
     static void TearDownTestCase() { RemoveTestTempDir(); }
 
     static void RemoveTestTempDir()
@@ -65,6 +87,14 @@ TEST_F(ConfigStoreTests, WriterCanCreateFile)
     ASSERT_EQ(st.st_size, sizeof(ConfigStoreFileHeader));
 
     ConfigStore_Close(&sto);
+
+    //test the "ConfigStore_DeleteAllTempFiles" function
+    bool success=SetUpFilesInDir();
+    if(success)
+    {
+        ASSERT_EQ(::stat(TestFile.tmp, &st), 0);
+    }
+
 }
 
 TEST_F(ConfigStoreTests, WriterCanAddEntryToFile)
