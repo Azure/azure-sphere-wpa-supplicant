@@ -1,6 +1,13 @@
-<testsuites disabled="0" errors="0" failures="0" name="AllTests" random_seed="12253" tests="2" time="0.006" timestamp="2020-06-12T00:06:23">
-  <testsuite disabled="0" errors="0" failures="0" name="ConfigStoreTests" tests="2" time="0.006">
+<testsuites disabled="0" errors="0" failures="1" name="AllTests" random_seed="388" tests="3" time="0.006" timestamp="2020-06-12T20:27:51">
+  <testsuite disabled="0" errors="0" failures="1" name="ConfigStoreTests" tests="3" time="0.005">
     <testcase classname="ConfigStoreTests" name="WriterCanAddEntryToFile" status="run" time="0.003" />
-    <testcase classname="ConfigStoreTests" name="WriterCanCreateFile" status="run" time="0.003" />
+    <testcase classname="ConfigStoreTests" name="DeleteTempFile" status="run" time="0">
+      <failure message="../../../tests/config_store_tests.cc:107&#10;Value of: res == false || errno == EEXIST&#10;  Actual: false&#10;Expected: true&#10;2" type="">../../../tests/config_store_tests.cc:107
+Value of: res == false || errno == EEXIST
+  Actual: false
+Expected: true
+2</failure>
+    </testcase>
+    <testcase classname="ConfigStoreTests" name="WriterCanCreateFile" status="run" time="0.002" />
   </testsuite>
 </testsuites>

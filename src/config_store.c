@@ -119,13 +119,20 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
     ptr = rindex(fileName, '.');
 
     //Check for filename extensions
-    if ((ptr != NULL) && (strncmp(ptr, ".conf", 5) == 0))
+    if ((ptr != NULL) && (strncmp(ptr, ".tmp", 4) == 0))
     {
         printf("the file to delete: %s\n",fileName);
         char *fileToDelete = AppendString(filePath, fileName);
+        printf("the file path: %s\n",fileToDelete);
 
         //delete the file
-        unlink(fileToDelete);
+        //int status;
+        unlink(fileName);
+        //status = errno;
+        //perror("Error printed by perror");
+        //fprintf(stderr, "Error opening file: %s\n", strerror( status ));
+        
+        //printf("\nthe status is: %s\n",status);
         //free the memory
         free(fileToDelete);
     }
@@ -133,6 +140,7 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
 // to delete all the garbage temp files
 void ConfigStore_DeleteAllTempFiles(const char *dirPath)
 {
+    //printf("\nthe directory path is: %s\n",dirPath);
     DIR *myDirectory;
     struct dirent *fileName;
 
@@ -144,6 +152,7 @@ void ConfigStore_DeleteAllTempFiles(const char *dirPath)
         //read the files in the directory
         while ((fileName = readdir(myDirectory)))
         {
+            //printf("\nthe file name is: %s\n",fileName);
             //check if this file is .tmp and delete it
             DeleteFileHelper(fileName, dirPath);
         }
