@@ -29,10 +29,10 @@ public:
     }
 
     //to test the ConfigStore_DeleteAllTempFiles function
-    static void SetUpFilesInDir()
+    /*static void SetUpFilesInDir()
     {
         //create a temp file
-        /*char filePath[100];
+        char filePath[100];
         snprintf(filePath, 100, "%s/TestFile.txt", TempTestDir);
         FILE* filePtr = fopen(filePath,"w");
         fclose(filePtr);
@@ -41,12 +41,12 @@ public:
         ASSERT_TRUE(filePtr != 0 || errno == EEXIST) << errno;*/
 
         //create a temp file
-        FILE* filePtr = fopen(FILE_NAME,"w");
+        /*FILE* filePtr = fopen(FILE_NAME,"w");
         fclose(filePtr);
         
         //check if the file is created
         ASSERT_TRUE(filePtr != 0 || errno == EEXIST) << errno;
-    }
+    }*/
 
     static void TearDownTestCase() { RemoveTestTempDir(); }
 
@@ -127,7 +127,7 @@ TEST_F(ConfigStoreTests, WriterCanCreateFile)
 
     ConfigStore_Close(&sto);
 
-    //test the "ConfigStore_DeleteAllTempFiles" function
+    /*//test the "ConfigStore_DeleteAllTempFiles" function
     //SetUpFilesInDir();
 
     ConfigStore_DeleteAllTempFiles(TempTestDir);
@@ -159,7 +159,7 @@ TEST_F(ConfigStoreTests, WriterCanCreateFile)
         // Close the directory
         closedir(myDirectory);
     }
-    ASSERT_TRUE(res == false || errno == EEXIST) << errno;
+    ASSERT_TRUE(res == false || errno == EEXIST) << errno;*/
 
 }
 
