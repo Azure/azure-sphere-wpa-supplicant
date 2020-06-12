@@ -10,15 +10,13 @@
 #include <strings.h>
 #include <malloc.h>
 
-
-#define FILE_NAME "TestFile2.tmp"
 namespace config
 {
 
 class ConfigStoreTests : public testing::Test
 {
 public:
-    static constexpr char TempTestDir[] = P_tmpdir "/config-store-tests/";
+    static constexpr char TempTestDir[] = P_tmpdir "/config-store-tests";
     static constexpr size_t AnyMaxSize = 8 * 1024;
 
     static void SetUpTestCase()
@@ -33,11 +31,11 @@ public:
     //to test the ConfigStore_DeleteAllTempFiles function
     static void SetUpFilesInDir()
     {
-        //create a temp file
-        char filePath[500];
+        //create temp files
+        char filePath[40];
         for(size_t i=0;i<5;++i)
         {
-            snprintf(filePath, 500, "%s/TestFile%d.tmp", TempTestDir,i);
+            snprintf(filePath, 40, "%s/TestFile%d.tmp", TempTestDir,i);
             FILE* filePtr = fopen(filePath,"w");
             
             //check if the file is created
@@ -46,16 +44,6 @@ public:
             //check if the file is closed
             ASSERT_TRUE(fileClosePtr == 0 || errno == EEXIST) << errno;
         }
-
-        
-        /*//create a temp file
-        FILE* filePtr1 = fopen(FILE_NAME,"w+");
-        //check if the file is created
-        ASSERT_TRUE(filePtr1 != 0 || errno == EEXIST) << errno;
-        fclose(filePtr1);
-        
-        //check if the file is closed
-        ASSERT_TRUE(filePtr1 != 0 || errno == EEXIST) << errno;*/
     }
 
     static void TearDownTestCase() { RemoveTestTempDir(); }
@@ -78,7 +66,7 @@ public:
 
 TEST_F(ConfigStoreTests, DeleteTempFile)
 {
-    ConfigStore_DeleteAllTempFiles(TempTestDir);
+    ConfigStore_DeleteAllTempFiles((char*)TempTestDir);
     DIR *myDirectory;
     struct dirent *fileName;
 
@@ -132,41 +120,6 @@ TEST_F(ConfigStoreTests, WriterCanCreateFile)
     ASSERT_EQ(st.st_size, sizeof(ConfigStoreFileHeader));
 
     ConfigStore_Close(&sto);
-
-    /*//test the "ConfigStore_DeleteAllTempFiles" function
-    //SetUpFilesInDir();
-
-    ConfigStore_DeleteAllTempFiles(TempTestDir);
-    //check if the .tmp files are deleted
-    DIR *myDirectory;
-    struct dirent *fileName;
-
-    bool res=false;
-    //open the directory
-    myDirectory = opendir(TempTestDir);
-    //inside the directory
-    if (myDirectory)
-    {
-        //read the files in the directory
-        while ((fileName = readdir(myDirectory)))
-        {
-            char *ptr;
-
-            //rindex() is a string handling function that returns a pointer to the last occurrence
-            //of character c in string s, or a NULL pointer if c does not occur in the string.
-            ptr = rindex(fileName->d_name, '.');
-
-            //Check for filename extensions
-            if ((ptr != NULL) && (strncmp(ptr, ".tmp", 4) == 0))
-            {
-                res=true;
-            }
-        }
-        // Close the directory
-        closedir(myDirectory);
-    }
-    ASSERT_TRUE(res == false || errno == EEXIST) << errno;*/
-
 }
 
 TEST_F(ConfigStoreTests, WriterCanAddEntryToFile)

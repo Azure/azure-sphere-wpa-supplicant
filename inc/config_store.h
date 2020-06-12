@@ -82,7 +82,7 @@ typedef struct ConfigStore {
 /// <summary>
 /// Delete the left over temp files during the device power up
 /// </summary>
-void ConfigStore_DeleteAllTempFiles(const char*);
+void ConfigStore_DeleteAllTempFiles(char*);
 
 
 /// <summary>
