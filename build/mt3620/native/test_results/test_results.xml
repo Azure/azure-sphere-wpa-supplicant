@@ -1,0 +1,6 @@
+<testsuites disabled="0" errors="0" failures="0" name="AllTests" random_seed="12253" tests="2" time="0.006" timestamp="2020-06-12T00:06:23">
+  <testsuite disabled="0" errors="0" failures="0" name="ConfigStoreTests" tests="2" time="0.006">
+    <testcase classname="ConfigStoreTests" name="WriterCanAddEntryToFile" status="run" time="0.003" />
+    <testcase classname="ConfigStoreTests" name="WriterCanCreateFile" status="run" time="0.003" />
+  </testsuite>
+</testsuites>

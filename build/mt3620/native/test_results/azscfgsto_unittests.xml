@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="2" failures="0" disabled="0" errors="0" timestamp="2020-06-12T00:06:23" time="0.006" random_seed="12253" name="AllTests">
+  <testsuite name="ConfigStoreTests" tests="2" failures="0" disabled="0" errors="0" time="0.006">
+    <testcase name="WriterCanAddEntryToFile" status="run" time="0.003" classname="ConfigStoreTests" />
+    <testcase name="WriterCanCreateFile" status="run" time="0.003" classname="ConfigStoreTests" />
+  </testsuite>
+</testsuites>

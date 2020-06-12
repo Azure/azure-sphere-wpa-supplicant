@@ -5,6 +5,9 @@
 #include <gtest/gtest.h>
 #include <stdio.h>
 #include <stdlib.h> 
+#include <sys/types.h>
+#include <dirent.h>
+#include <strings.h>
 
 #define FILE_NAME "TestFile.tmp"
 namespace config
@@ -22,27 +25,27 @@ public:
         int r = mkdir(TempTestDir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
         ASSERT_TRUE(r == 0 || errno == EEXIST) << errno;
         chdir(TempTestDir);
+        //SetUpFilesInDir();
     }
 
     //to test the ConfigStore_DeleteAllTempFiles function
     static void SetUpFilesInDir()
     {
-        struct stat st;
-        //check if the TempTestDir exists
-        if (stat(TempTestDir, &st) == -1) 
-        {
-            int r = mkdir(TempTestDir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-            ASSERT_TRUE(r == 0 || errno == EEXIST) << errno;
-        }
-        //change the directory
-        chdir(TempTestDir);
+        //create a temp file
+        /*char filePath[100];
+        snprintf(filePath, 100, "%s/TestFile.txt", TempTestDir);
+        FILE* filePtr = fopen(filePath,"w");
+        fclose(filePtr);
+        
+        //check if the file is created
+        ASSERT_TRUE(filePtr != 0 || errno == EEXIST) << errno;*/
 
         //create a temp file
         FILE* filePtr = fopen(FILE_NAME,"w");
-        //fclose(filePtr);
+        fclose(filePtr);
         
         //check if the file is created
-        ASSERT_TRUE(filePtr == 0 || errno == EEXIST) << errno;
+        ASSERT_TRUE(filePtr != 0 || errno == EEXIST) << errno;
     }
 
     static void TearDownTestCase() { RemoveTestTempDir(); }
@@ -63,6 +66,40 @@ public:
     }
 };
 
+/*TEST_F(ConfigStoreTests, WriterCanCreateFile1)
+{
+    SetUpFilesInDir();
+    //onfigStore_DeleteAllTempFiles(TempTestDir);
+    //check if the .tmp files are deleted
+    DIR *myDirectory;
+    struct dirent *fileName;
+
+    bool res=false;
+    //open the directory
+    myDirectory = opendir(TempTestDir);
+    //inside the directory
+    if (myDirectory)
+    {
+        //read the files in the directory
+        while ((fileName = readdir(myDirectory)))
+        {
+            char *ptr;
+
+            //rindex() is a string handling function that returns a pointer to the last occurrence
+            //of character c in string s, or a NULL pointer if c does not occur in the string.
+            ptr = rindex(fileName->d_name, '.');
+
+            //Check for filename extensions
+            if ((ptr != NULL) && (strncmp(ptr, ".tmp", 4) == 0))
+            {
+                res=true;
+            }
+        }
+        // Close the directory
+        closedir(myDirectory);
+    }
+    ASSERT_TRUE(res == false || errno == EEXIST) << errno;
+}*/
 TEST_F(ConfigStoreTests, WriterCanCreateFile)
 {
     auto file_name = GetCurrentTestName();
@@ -91,12 +128,38 @@ TEST_F(ConfigStoreTests, WriterCanCreateFile)
     ConfigStore_Close(&sto);
 
     //test the "ConfigStore_DeleteAllTempFiles" function
-    SetUpFilesInDir();
-    /*if(success)
+    //SetUpFilesInDir();
+
+    ConfigStore_DeleteAllTempFiles(TempTestDir);
+    //check if the .tmp files are deleted
+    DIR *myDirectory;
+    struct dirent *fileName;
+
+    bool res=false;
+    //open the directory
+    myDirectory = opendir(TempTestDir);
+    //inside the directory
+    if (myDirectory)
     {
-        ConfigStore_DeleteAllTempFiles(P_tmpdir "/config-store-tests");
-        ASSERT_EQ(::stat(TestFile.tmp, &st), 0);
-    }*/
+        //read the files in the directory
+        while ((fileName = readdir(myDirectory)))
+        {
+            char *ptr;
+
+            //rindex() is a string handling function that returns a pointer to the last occurrence
+            //of character c in string s, or a NULL pointer if c does not occur in the string.
+            ptr = rindex(fileName->d_name, '.');
+
+            //Check for filename extensions
+            if ((ptr != NULL) && (strncmp(ptr, ".tmp", 4) == 0))
+            {
+                res=true;
+            }
+        }
+        // Close the directory
+        closedir(myDirectory);
+    }
+    ASSERT_TRUE(res == false || errno == EEXIST) << errno;
 
 }
 
