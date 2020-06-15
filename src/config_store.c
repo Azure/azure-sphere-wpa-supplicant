@@ -130,7 +130,7 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
         int status=unlink(fileName);
         printf("\nthe file is deleted: %d\n",status);
         //free the memory
-        free (path);
+        //free (path);
         free(fileToDelete);
     }
 }
@@ -157,6 +157,7 @@ void ConfigStore_DeleteAllTempFiles(char *dirPath)
         // Close the directory
         closedir(myDirectory);
     }
+    free(directoryPath);
 }
 
 void ConfigStore_Close(ConfigStore *p)
