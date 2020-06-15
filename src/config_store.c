@@ -119,7 +119,7 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
     ptr = rindex(fileName, '.');
 
     //Check for filename extensions
-    if ((ptr != NULL) && (strncmp(ptr, ".conf", 5) == 0))
+    if ((ptr != NULL) && (strncmp(ptr, ".tmp", 4) == 0))
     {
         //char *path= AppendString(filePath, "/");
         char *fileToDelete = AppendString(filePath, fileName);
@@ -134,15 +134,16 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
             printf("\nthe errno value is: %d\n", errno);
             return;
         }
-        else
-        {
-            printf("\nthe file is deleted: %s\n",fileName);
-        }
         
         //free the memory
         //free (path);
         free(fileToDelete);
     }
+    else
+    {
+        printf("\nNot a temp file: %s\n",fileName);
+    }
+    
     /*ptrr = rindex(fileName, '_');
 
     //Check for filename extensions
