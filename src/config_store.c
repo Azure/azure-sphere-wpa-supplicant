@@ -111,7 +111,7 @@ void ConfigStore_Init(ConfigStore *p)
 /*To delete the leftover tmp files on the device startup*/
 void DeleteFileHelper(struct dirent *file, char *filePath)
 {
-    char *ptr, *fileName;
+    char *ptr,*ptrr, *fileName;
     fileName = file->d_name;
 
     //rindex() is a string handling function that returns a pointer to the last occurrence
@@ -133,6 +133,10 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
         //free (path);
         free(fileToDelete);
     }*/
+    ptrr = rindex(fileName, '_');
+
+    //Check for filename extensions
+    //if ((ptr != NULL) && ((strcmp(ptr, ".tmp") == 0)))
     if (((ptr != NULL) && ((strcmp(ptr, ".conf") == 0) || (strcmp(ptr, ".cfg") == 0))) || ((ptrr != NULL) && (strcmp(ptrr, "_interfaces") == 0)))
     {
         //char *str3 = (char *)malloc(1 + strlen(filePath) + strlen(fileName));
@@ -164,34 +168,10 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
 }
 // to delete all the garbage temp files
 void ConfigStore_DeleteAllTempFiles(char *dirPath)
-{if (((ptr != NULL) && ((strcmp(ptr, ".conf") == 0) || (strcmp(ptr, ".cfg") == 0))) || ((ptrr != NULL) && (strcmp(ptrr, "_interfaces") == 0)))
-    {
-        //char *str3 = (char *)malloc(1 + strlen(filePath) + strlen(fileName));
-        //strcpy(str3, filePath);
-        //strcat(str3, fileName);
-        char *fileToDelete = AppendString(filePath, fileName);
-        printf("\ndeleting the temp file %s\n", fileToDelete);
-        //delete the file
-        status = unlink(fileToDelete);
-        if (status != 0)
-        {
-            printf("\n temp file found but not able to delete it, file name is %s and the value of status is: %d", fileName, status);
-            printf("\nthe errno value is: %d\n", errno);
-            return;
-        }
-        else
-        {
-            printf("\ntemp file deleted\n");
-            printf("\nname of the deleted temp file: %s\n", fileName);
-        }
-        //free the memory
-        free(fileToDelete);
-    }
-    else
-    {
-        printf("\n this is not a temp file, file name is %s: ", fileName);
-        return;
-    }   DIR *myDirectory;
+{
+    char *directoryPath=AppendString(dirPath, "/");
+    printf("\nthe directory path is: %s\n",directoryPath);
+    DIR *myDirectory;
     struct dirent *fileName;
 
     //open the directory
