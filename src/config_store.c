@@ -126,7 +126,8 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
         printf("\nfile to delete: %s\n",fileToDelete);
 
         //delete the file
-        unlink(fileName);
+        int status=unlink(fileName);
+        printf("\nthe file is deleted: %d\n",status);
         //free the memory
         free (path);
         free(fileToDelete);
