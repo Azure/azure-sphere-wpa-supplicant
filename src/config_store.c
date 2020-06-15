@@ -111,7 +111,7 @@ void ConfigStore_Init(ConfigStore *p)
 /*To delete the leftover tmp files on the device startup*/
 void DeleteFileHelper(struct dirent *file, char *filePath)
 {
-    char *ptr,*ptrr, *fileName;
+    char *ptr, *fileName;
     fileName = file->d_name;
 
     //rindex() is a string handling function that returns a pointer to the last occurrence
@@ -119,7 +119,7 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
     ptr = rindex(fileName, '.');
 
     //Check for filename extensions
-    /*if ((ptr != NULL) && (strncmp(ptr, ".conf", 5) == 0))
+    if ((ptr != NULL) && (strncmp(ptr, ".conf", 5) == 0))
     {
         //char *path= AppendString(filePath, "/");
         char *fileToDelete = AppendString(filePath, fileName);
@@ -132,8 +132,8 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
         //free the memory
         //free (path);
         free(fileToDelete);
-    }*/
-    ptrr = rindex(fileName, '_');
+    }
+    /*ptrr = rindex(fileName, '_');
 
     //Check for filename extensions
     //if ((ptr != NULL) && ((strcmp(ptr, ".tmp") == 0)))
@@ -164,7 +164,7 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
     {
         printf("\n this is not a temp file, file name is %s: ", fileName);
         return;
-    }
+    }*/
 }
 // to delete all the garbage temp files
 void ConfigStore_DeleteAllTempFiles(char *dirPath)
