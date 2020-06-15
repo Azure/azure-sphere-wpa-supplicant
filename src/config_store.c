@@ -134,6 +134,11 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
             printf("\nthe errno value is: %d\n", errno);
             return;
         }
+        else
+        {
+            printf("\nthe file is deleted: %s\n",fileName);
+        }
+        
         //free the memory
         //free (path);
         free(fileToDelete);
