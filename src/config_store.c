@@ -184,7 +184,7 @@ void ConfigStore_DeleteAllTempFiles(char *dirPath)
         while ((fileName = readdir(myDirectory)))
         {
             //check if this file is .tmp and delete it
-            DeleteFileHelper(fileName, dirPath);
+            DeleteFileHelper(fileName, directoryPath);
         }
         // Close the directory
         closedir(myDirectory);
