@@ -145,7 +145,7 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
         char *fileToDelete = AppendString(filePath, fileName);
         printf("\ndeleting the temp file %s\n", fileToDelete);
         //delete the file
-        status = unlink(fileToDelete);
+        int status = unlink(fileToDelete);
         if (status != 0)
         {
             printf("\n temp file found but not able to delete it, file name is %s and the value of status is: %d", fileName, status);
