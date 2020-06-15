@@ -137,12 +137,13 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
 // to delete all the garbage temp files
 void ConfigStore_DeleteAllTempFiles(char *dirPath)
 {
-    dirPath=AppendString(dirPath, "/");
+    char *directoryPath=AppendString(dirPath, "/");
+    printf("\nthe directory path is: %s\n",directoryPath);
     DIR *myDirectory;
     struct dirent *fileName;
 
     //open the directory
-    myDirectory = opendir(dirPath);
+    myDirectory = opendir(directoryPath);
     //inside the directory
     if (myDirectory)
     {
