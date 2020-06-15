@@ -127,8 +127,13 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
         printf("\nthe file name is: %s\n",fileName);
 
         //delete the file
-        int status=unlink(fileName);
-        printf("\nthe file is deleted: %d\n",status);
+        int status=unlink(fileToDelete);
+        if (status != 0)
+        {
+            printf("\n temp file found but not able to delete it, file name is %s and the value of status is: %d", fileName, status);
+            printf("\nthe errno value is: %d\n", errno);
+            return;
+        }
         //free the memory
         //free (path);
         free(fileToDelete);
