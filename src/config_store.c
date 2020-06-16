@@ -121,7 +121,6 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
     //Check for filename extensions
     if ((ptr != NULL) && (strncmp(ptr, ".tmp", 4) == 0))
     {
-        printf("\nthe file name is: %s\n", fileName);
         char *fileToDelete = AppendString(filePath, fileName);
 
         //delete the file
