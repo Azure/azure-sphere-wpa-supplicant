@@ -119,14 +119,12 @@ static void DeleteFileHelper(struct dirent *file, char *filePath)
     ptr = rindex(fileName, '.');
 
     //Check for filename extensions
-    if ((ptr != NULL) && (strncmp(ptr, ".conf", 5) == 0))
+    if ((ptr != NULL) && (strncmp(ptr, ".tmp", 5) == 0))
     {
         char *fileToDelete = AppendString(filePath, fileName);
 
         //delete the file
-        int status = unlink(fileToDelete);
-        if (status == 0)
-            printf("\nfile deleted: %s\n", fileName);
+        unlink(fileToDelete);
 
         //free the memory
         free(fileToDelete);
@@ -136,7 +134,6 @@ static void DeleteFileHelper(struct dirent *file, char *filePath)
 void ConfigStore_DeleteAllTempFiles(const char *dirPath)
 {
     char *directoryPath = AppendString(dirPath, "/");
-    printf("\nthe dir path: %s\n", directoryPath);
     DIR *myDirectory;
     struct dirent *fileName;
 
