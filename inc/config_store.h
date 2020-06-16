@@ -89,7 +89,7 @@ extern "C"
     /// The parameter is the networkD directory path (garbage temp files are
     /// in networkD directory)
     /// </summary>
-    void ConfigStore_DeleteAllTempFiles(char *dirPath);
+    void ConfigStore_DeleteAllTempFiles(const char *dirPath);
 
     /// <summary>
     /// Initializes the memory of a ConfigStore for usage. Equivalent to the constructor.
