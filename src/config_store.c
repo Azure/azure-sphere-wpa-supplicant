@@ -121,67 +121,20 @@ void DeleteFileHelper(struct dirent *file, char *filePath)
     //Check for filename extensions
     if ((ptr != NULL) && (strncmp(ptr, ".tmp", 4) == 0))
     {
-        //char *path= AppendString(filePath, "/");
+        printf("\nthe file name is: %s\n", fileName);
         char *fileToDelete = AppendString(filePath, fileName);
-        printf("\nfile to delete: %s\n",fileToDelete);
-        printf("\nthe file name is: %s\n",fileName);
 
         //delete the file
-        int status=unlink(fileToDelete);
-        if (status != 0)
-        {
-            printf("\n temp file found but not able to delete it, file name is %s and the value of status is: %d", fileName, status);
-            printf("\nthe errno value is: %d\n", errno);
-            return;
-        }
-        
-        //free the memory
-        //free (path);
-        free(fileToDelete);
-    }
-    else
-    {
-        printf("\nNot a temp file: %s\n",fileName);
-    }
-    
-    /*ptrr = rindex(fileName, '_');
+        unlink(fileToDelete);
 
-    //Check for filename extensions
-    //if ((ptr != NULL) && ((strcmp(ptr, ".tmp") == 0)))
-    if (((ptr != NULL) && ((strcmp(ptr, ".conf") == 0) || (strcmp(ptr, ".cfg") == 0))) || ((ptrr != NULL) && (strcmp(ptrr, "_interfaces") == 0)))
-    {
-        //char *str3 = (char *)malloc(1 + strlen(filePath) + strlen(fileName));
-        //strcpy(str3, filePath);
-        //strcat(str3, fileName);
-        char *fileToDelete = AppendString(filePath, fileName);
-        printf("\ndeleting the temp file %s\n", fileToDelete);
-        //delete the file
-        int status = unlink(fileToDelete);
-        if (status != 0)
-        {
-            printf("\n temp file found but not able to delete it, file name is %s and the value of status is: %d", fileName, status);
-            printf("\nthe errno value is: %d\n", errno);
-            return;
-        }
-        else
-        {
-            printf("\ntemp file deleted\n");
-            printf("\nname of the deleted temp file: %s\n", fileName);
-        }
         //free the memory
         free(fileToDelete);
     }
-    else
-    {
-        printf("\n this is not a temp file, file name is %s: ", fileName);
-        return;
-    }*/
 }
 // to delete all the garbage temp files
 void ConfigStore_DeleteAllTempFiles(char *dirPath)
 {
-    char *directoryPath=AppendString(dirPath, "/");
-    printf("\nthe directory path is: %s\n",directoryPath);
+    char *directoryPath = AppendString(dirPath, "/");
     DIR *myDirectory;
     struct dirent *fileName;
 
@@ -190,7 +143,6 @@ void ConfigStore_DeleteAllTempFiles(char *dirPath)
     //inside the directory
     if (myDirectory)
     {
-        printf("the directory is open");
         //read the files in the directory
         while ((fileName = readdir(myDirectory)))
         {
