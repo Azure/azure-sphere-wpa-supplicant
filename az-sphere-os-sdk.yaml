@@ -1,0 +1,6 @@
+name: Azure Sphere Config Store
+description:
+  Azure Sphere Config Store
+targets:
+  - native
+analyze-exclude:

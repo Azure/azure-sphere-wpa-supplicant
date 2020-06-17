@@ -80,6 +80,13 @@ typedef struct ConfigStore {
 } ConfigStore;
 
 /// <summary>
+/// Deletes files with a .tmp extension in the given directory. 
+/// </summary>
+/// <param name="dirPath">The directory path from which .tmp files needs
+/// to be deleted.</param>
+void ConfigStore_DeleteAllTempFiles(const char *dirPath);
+
+/// <summary>
 /// Initializes the memory of a ConfigStore for usage. Equivalent to the constructor.
 /// </summary>
 void ConfigStore_Init(ConfigStore *p);
