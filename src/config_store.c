@@ -105,14 +105,12 @@ static void DeleteFileHelper(const char *fileName, const char *filePath)
     ptr = rindex(fileName, '.');
 
     //Check for filename extensions
-    if ((ptr != NULL) && (strncmp(ptr, ".conf", 6) == 0))
+    if ((ptr != NULL) && (strncmp(ptr, ".tmp", 5) == 0))
     {
         char *fileToDelete = AppendString(filePath, fileName);
 
         //delete the file
-        int status=unlink(fileToDelete);
-        if(status==0)
-            printf("\nfile deleted: %s\n",fileName);
+        unlink(fileToDelete);
 
         //free the memory
         free(fileToDelete);
