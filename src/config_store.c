@@ -96,10 +96,9 @@ void ConfigStore_Init(ConfigStore *p)
 }
 
 /*To delete the leftover tmp files on the device startup*/
-static void DeleteFileHelper(struct dirent *file, char *filePath)
+static void DeleteFileHelper(const char *fileName, const char *filePath)
 {
-    char *ptr, *fileName;
-    fileName = file->d_name;
+    char *ptr;
 
     //rindex() is a string handling function that returns a pointer to the last occurrence
     //of character c in string s, or a NULL pointer if c does not occur in the string.
@@ -122,7 +121,7 @@ void ConfigStore_DeleteAllTempFiles(const char *dirPath)
 {
     char *directoryPath = AppendString(dirPath, "/");
     DIR *myDirectory;
-    struct dirent *fileName;
+    struct dirent *file;
 
     //open the directory
     myDirectory = opendir(directoryPath);
@@ -130,10 +129,10 @@ void ConfigStore_DeleteAllTempFiles(const char *dirPath)
     if (myDirectory)
     {
         //read the files in the directory
-        while ((fileName = readdir(myDirectory)))
+        while ((file = readdir(myDirectory)))
         {
             //check if this file is .tmp and delete it
-            DeleteFileHelper(fileName, directoryPath);
+            DeleteFileHelper(file->d_name, directoryPath);
         }
         // Close the directory
         closedir(myDirectory);

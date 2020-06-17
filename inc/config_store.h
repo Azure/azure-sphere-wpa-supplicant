@@ -80,10 +80,10 @@ typedef struct ConfigStore {
 } ConfigStore;
 
 /// <summary>
-/// Delete the left over temp files during the device power up.
-/// The parameter is the networkD directory path (garbage temp files are
-/// in networkD directory)
+/// Deletes files with a .tmp extension in the given directory. 
 /// </summary>
+/// <param name="dirPath">The directory path from which .tmp files needs
+/// to be deleted.</param>
 void ConfigStore_DeleteAllTempFiles(const char *dirPath);
 
 /// <summary>
