@@ -3,12 +3,6 @@
 #include <ftw.h>
 #include <fcntl.h>
 #include <gtest/gtest.h>
-#include <stdio.h>
-#include <stdlib.h> 
-#include <sys/types.h>
-#include <dirent.h>
-#include <strings.h>
-#include <malloc.h>
 
 namespace config
 {
@@ -25,25 +19,6 @@ public:
         int r = mkdir(TempTestDir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
         ASSERT_TRUE(r == 0 || errno == EEXIST) << errno;
         chdir(TempTestDir);
-        SetUpFilesInDir();
-    }
-
-    //to test the ConfigStore_DeleteAllTempFiles function
-    static void SetUpFilesInDir()
-    {
-        //create temp files
-        char filePath[40];
-        for(size_t i=0;i<5;++i)
-        {
-            snprintf(filePath, 40, "%s/TestFile%d.tmp", TempTestDir,i);
-            FILE* filePtr = fopen(filePath,"w");
-            
-            //check if the file is created
-            ASSERT_TRUE(filePtr != 0 || errno == EEXIST) << errno;
-            int fileClosePtr= fclose(filePtr);
-            //check if the file is closed
-            ASSERT_TRUE(fileClosePtr == 0 || errno == EEXIST) << errno;
-        }
     }
 
     static void TearDownTestCase() { RemoveTestTempDir(); }
@@ -64,36 +39,6 @@ public:
     }
 };
 
-TEST_F(ConfigStoreTests, DeleteTempFile)
-{
-    ConfigStore_DeleteAllTempFiles((char*)TempTestDir);
-    DIR *myDirectory;
-    struct dirent *fileName;
-
-    bool res=false;
-    //open the directory
-    myDirectory = opendir(TempTestDir);
-    //inside the directory
-    if (myDirectory)
-    {
-        //read the files in the directory
-        while ((fileName = readdir(myDirectory)))
-        {
-            char *ptr;
-            ptr = rindex(fileName->d_name, '.');
-
-            //Check for filename extensions
-            if ((ptr != NULL) && (strncmp(ptr, ".tmp", 4) == 0))
-            {
-                res=true;
-            }
-        }
-        ASSERT_TRUE(res == false || errno == EEXIST) << errno;
-        // Close the directory
-        closedir(myDirectory);
-    }
-    
-}
 TEST_F(ConfigStoreTests, WriterCanCreateFile)
 {
     auto file_name = GetCurrentTestName();

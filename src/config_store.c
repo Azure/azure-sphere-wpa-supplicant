@@ -10,10 +10,7 @@
 #include <sys/stat.h>
 #include <sys/statvfs.h>
 #include <sys/types.h>
-#include <sys/dir.h>
 #include <unistd.h>
-#include <dirent.h>
-#include <string.h>
 
 static char *AppendString(const char *front, const char *back)
 {
@@ -93,51 +90,6 @@ void ConfigStore_Init(ConfigStore *p)
 {
     memset(p, 0, sizeof(*p));
     p->_fd = -1;
-}
-
-/*To delete the leftover tmp files on the device startup*/
-static void DeleteFileHelper(const char *fileName, const char *filePath)
-{
-    char *ptr;
-
-    //rindex() is a string handling function that returns a pointer to the last occurrence
-    //of character c in string s, or a NULL pointer if c does not occur in the string.
-    ptr = rindex(fileName, '.');
-
-    //Check for filename extensions
-    if ((ptr != NULL) && (strncmp(ptr, ".tmp", 5) == 0))
-    {
-        char *fileToDelete = AppendString(filePath, fileName);
-
-        //delete the file
-        unlink(fileToDelete);
-
-        //free the memory
-        free(fileToDelete);
-    }
-}
-// to delete all the garbage temp files
-void ConfigStore_DeleteAllTempFiles(const char *dirPath)
-{
-    char *directoryPath = AppendString(dirPath, "/");
-    DIR *myDirectory;
-    struct dirent *file;
-
-    //open the directory
-    myDirectory = opendir(directoryPath);
-    //inside the directory
-    if (myDirectory)
-    {
-        //read the files in the directory
-        while ((file = readdir(myDirectory)))
-        {
-            //check if this file is .tmp and delete it
-            DeleteFileHelper(file->d_name, directoryPath);
-        }
-        // Close the directory
-        closedir(myDirectory);
-    }
-    free(directoryPath);
 }
 
 void ConfigStore_Close(ConfigStore *p)
